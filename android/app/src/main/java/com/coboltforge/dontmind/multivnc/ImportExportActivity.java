@@ -32,6 +32,8 @@ import java.net.URLConnection;
 
 import org.xml.sax.SAXException;
 
+import com.example.cycle.R;
+
 /**
  * @author Michael A. MacDonald
  *

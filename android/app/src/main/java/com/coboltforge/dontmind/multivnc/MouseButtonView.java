@@ -16,6 +16,8 @@ import android.view.MotionEvent;
 import android.view.SoundEffectConstants;
 import android.view.View;
 
+import com.example.cycle.R;
+
 
 public class MouseButtonView extends View {
 

@@ -32,6 +32,8 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.example.cycle.R;
+
 /**
  * @author Michael A. MacDonald
  *

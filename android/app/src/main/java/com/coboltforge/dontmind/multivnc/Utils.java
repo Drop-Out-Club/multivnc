@@ -18,6 +18,9 @@ import android.text.Html;
 import android.util.Log;
 import android.view.MotionEvent;
 
+import com.example.cycle.R;
+import com.example.cycle.BuildConfig;
+
 public class Utils {
 
 	private static final String TAG = "Utils";

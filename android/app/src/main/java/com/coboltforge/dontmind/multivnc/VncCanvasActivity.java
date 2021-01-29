@@ -63,6 +63,8 @@ import android.content.Context;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import com.example.cycle.R;
+
 @SuppressWarnings("deprecation")
 public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemClickListener {
 

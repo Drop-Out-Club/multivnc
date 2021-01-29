@@ -15,11 +15,11 @@ import java.lang.Comparable;
  * @author Michael A. MacDonald
  *
  */
-class ConnectionBean extends AbstractConnectionBean implements Comparable<ConnectionBean> {
+public class ConnectionBean extends AbstractConnectionBean implements Comparable<ConnectionBean> {
 	static final NewInstance<ConnectionBean> newInstance=new NewInstance<ConnectionBean>() {
 		public ConnectionBean get() { return new ConnectionBean(); }
 	};
-	ConnectionBean()
+	public ConnectionBean()
 	{
 		set_Id(0);
 		setAddress("");

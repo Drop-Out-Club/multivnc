@@ -26,6 +26,8 @@ import android.view.SurfaceView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
+import com.example.cycle.R;
+
 
 public class TouchPointView extends SurfaceView implements SurfaceHolder.Callback {
 	@SuppressWarnings("unused")

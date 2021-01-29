@@ -20,6 +20,8 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
+import com.example.cycle.R;
+
 
 public class AboutActivity extends Activity {
 
