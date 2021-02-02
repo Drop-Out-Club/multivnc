@@ -45,29 +45,4 @@
 		android:visibility="invisible"
 		android:minWidth="50sp"/>
 
-	<LinearLayout
-    android:orientation="vertical"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_gravity="center|bottom">
-
-
-
-	  <LinearLayout
-	      android:id="@+id/virtualmousebuttons"
-	      android:orientation="horizontal"
-	      android:layout_width="fill_parent"
-	      android:layout_height="70dip">
-	      <com.coboltforge.dontmind.multivnc.MouseButtonView
-	      	  android:id="@+id/mousebutton1"
-	          android:gravity="center_horizontal"
-	          android:background="#997f7f7f"
-	          android:layout_width="wrap_content"
-	          android:layout_height="fill_parent"
-	          android:layout_weight="1"/>
-	  </LinearLayout>
-
-	 </LinearLayout>
-
-
 </FrameLayout>

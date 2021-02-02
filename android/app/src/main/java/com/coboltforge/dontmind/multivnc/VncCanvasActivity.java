@@ -163,10 +163,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 			dragMode = true;
 			dragX = e.getX();
 			dragY = e.getY();
-
-			// only interpret as button down if virtual mouse buttons are disabled
-			if(mousebuttons.getVisibility() != View.VISIBLE)
-				dragModeButtonDown = true;
 		}
 
 		/*
@@ -298,66 +294,12 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 		 */
 		@Override
 		public boolean onTouchEvent(MotionEvent e) {
-			if (isTouchEvent(e) == false) { // physical input device
+			e = vncCanvas.changeTouchCoordinatesToFullFrame(e);
 
-				e = vncCanvas.changeTouchCoordinatesToFullFrame(e);
+			vncCanvas.processPointerEvent(e, true, false);
+			vncCanvas.panToMouse();
 
-				vncCanvas.processPointerEvent(e, true, false);
-				vncCanvas.panToMouse();
-
-				return true;
-			}
-
-			if (dragMode) {
-
-				if(Utils.DEBUG()) Log.d(TAG, "Input: touch dragMode");
-
-				// compute the relative movement offset on the remote screen.
-				float deltaX = (e.getX() - dragX) *vncCanvas.getScale();
-				float deltaY = (e.getY() - dragY) *vncCanvas.getScale();
-				dragX = e.getX();
-				dragY = e.getY();
-
-				// compute the absolution new mouse pos on the remote site.
-				float newRemoteX = vncCanvas.mouseX + deltaX;
-				float newRemoteY = vncCanvas.mouseY + deltaY;
-
-
-				if (e.getAction() == MotionEvent.ACTION_UP)
-				{
-					if(Utils.DEBUG()) Log.d(TAG, "Input: touch dragMode, finger up");
-
-					dragMode = false;
-
-					dragModeButtonDown = false;
-					dragModeButton2insteadof1 = false;
-
-					remoteMouseStayPut(e);
-					vncCanvas.processPointerEvent(e, false);
-					return super.onTouchEvent(e); // important! otherwise the gesture detector gets confused!
-				}
-				e.setLocation(newRemoteX, newRemoteY);
-
-				boolean status = false;
-				if(dragModeButtonDown) {
-					if(!dragModeButton2insteadof1) // button 1 down
-						status = vncCanvas.processPointerEvent(e, true, false);
-					else // button2 down
-						status = vncCanvas.processPointerEvent(e, true, true);
-				}
-				else { // dragging without any button down
-					status = vncCanvas.processPointerEvent(e, false);
-				}
-
-				return status;
-
-			}
-
-
-			if(Utils.DEBUG())
-				Log.d(TAG, "Input: touch normal: x:" + e.getX() + " y:" + e.getY() + " action:" + e.getAction());
-
-			return super.onTouchEvent(e);
+			return true;
 		}
 
 
@@ -445,10 +387,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 			if (isTouchEvent(e) == false)
 				return false;
 
-			// disable if virtual mouse buttons are in use
-			if(mousebuttons.getVisibility()== View.VISIBLE)
-				return false;
-
 			if(Utils.DEBUG()) Log.d(TAG, "Input: single tap");
 
 			boolean multiTouch = e.getPointerCount() > 1;
@@ -468,10 +406,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 		public boolean onDoubleTap(MotionEvent e) {
 
 			if (isTouchEvent(e) == false)
-				return false;
-
-			// disable if virtual mouse buttons are in use
-			if(mousebuttons.getVisibility()== View.VISIBLE)
 				return false;
 
 			if(Utils.DEBUG()) Log.d(TAG, "Input: double tap");
@@ -511,7 +445,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 	TextView zoomLevel;
 	MightyInputHandler inputHandler;
 
-	ViewGroup mousebuttons;
 	TouchPointView touchpoints;
 	Toast notificationToast;
 
@@ -688,13 +621,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 
 		});
 
-		mousebuttons = (ViewGroup) findViewById(R.id.virtualmousebuttons);
-		MouseButtonView mousebutton1 = (MouseButtonView) findViewById(R.id.mousebutton1);
-
-		mousebutton1.init(1, vncCanvas);
-		if(! prefs.getBoolean(Constants.PREFS_KEY_MOUSEBUTTONS, true))
-			mousebuttons.setVisibility(View.GONE);
-
 		touchpoints = (TouchPointView) findViewById(R.id.touchpoints);
 		touchpoints.setInputHandler(inputHandler);
 
@@ -848,18 +774,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 				vncCanvas.setVisibility(View.GONE);
 				touchpoints.setVisibility(View.VISIBLE);
 			}
-			return true;
-
-		case R.id.itemToggleMouseButtons:
-			if(mousebuttons.getVisibility()== View.VISIBLE) {
-				mousebuttons.setVisibility(View.GONE);
-				ed.putBoolean(Constants.PREFS_KEY_MOUSEBUTTONS, false);
-			}
-			else {
-				mousebuttons.setVisibility(View.VISIBLE);
-				ed.putBoolean(Constants.PREFS_KEY_MOUSEBUTTONS, true);
-			}
-			ed.commit();
 			return true;
 
 		case R.id.itemTogglePointerHighlight:
