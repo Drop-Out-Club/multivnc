@@ -128,7 +128,7 @@ public class VncCanvas extends GLSurfaceView {
     private static native void on_surface_created();
     private static native void on_surface_changed(int width, int height);
     private static native void on_draw_frame();
-	private static native void prepareTexture(long rfbClient);
+	 private static native void prepareTexture(long rfbClient);
 
 
 	private class VNCGLRenderer implements GLSurfaceView.Renderer {
@@ -331,7 +331,7 @@ public class VncCanvas extends GLSurfaceView {
 
 	private void mouseFollowPan()
 	{
-		try {
+		/*try {
 			if (vncConn.getConnSettings().getFollowPan())
 			{
 				int scrollx = absoluteXPosition;
@@ -346,7 +346,7 @@ public class VncCanvas extends GLSurfaceView {
 				}
 			}}
 		catch(NullPointerException e) {
-		}
+		}*/
 	}
 
 
@@ -482,10 +482,10 @@ public class VncCanvas extends GLSurfaceView {
 			if (newX < 0)
 				newX = 0;
 		}
-		if ( newX != absoluteXPosition ) {
+		/*if ( newX != absoluteXPosition ) {
 			absoluteXPosition = newX;
 			panned = true;
-		}
+		}*/
 		if (y - newY >= h - 5)
 		{
 			newY = y - h + 5;
@@ -498,10 +498,10 @@ public class VncCanvas extends GLSurfaceView {
 			if (newY < 0)
 				newY = 0;
 		}
-		if ( newY != absoluteYPosition ) {
+		/*if ( newY != absoluteYPosition ) {
 			absoluteYPosition = newY;
 			panned = true;
-		}
+		}*/
 		if (panned)
 		{
 			scrollToAbsolute();
@@ -662,7 +662,7 @@ public class VncCanvas extends GLSurfaceView {
 	 */
 	public boolean processPointerEvent(MotionEvent evt,boolean downEvent)
 	{
-		return processPointerEvent(evt,downEvent,cameraButtonDown);
+		return processPointerEvent(evt,downEvent,false);
 	}
 
 	/**

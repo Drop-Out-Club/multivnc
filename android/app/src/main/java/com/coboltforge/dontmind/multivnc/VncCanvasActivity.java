@@ -61,8 +61,6 @@ import android.widget.Toast;
 import android.view.inputmethod.InputMethodManager;
 import android.content.Context;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-
 import com.example.cycle.R;
 
 @SuppressWarnings("deprecation")
@@ -112,31 +110,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 			Log.d(TAG, "MightyInputHandler " + this +  " shutdown!");
 		}
 
-
-		/**
-		 * scale down delta when it is small. This will allow finer control
-		 * when user is making a small movement on touch screen.
-		 * Scale up delta when delta is big. This allows fast mouse movement when
-		 * user is flinging.
-		 * @param delta
-		 * @return
-		 */
-		private float fineCtrlScale(float delta) {
-			float sign = (delta>0) ? 1 : -1;
-			delta = Math.abs(delta);
-			if (delta>=1 && delta <=3) {
-				delta = 1;
-			}else if (delta <= 10) {
-				delta *= 0.34;
-			} else if (delta <= 30 ) {
-				delta *= delta/30;
-			} else if (delta <= 90) {
-				delta *=  (delta/30);
-			} else {
-				delta *= 3.0;
-			}
-			return sign * delta;
-		}
 
 		private void twoFingerFlingNotification(String str)
 		{
@@ -291,8 +264,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 				// compute the relative movement offset on the remote screen.
 				float deltaX = -distanceX *vncCanvas.getScale();
 				float deltaY = -distanceY *vncCanvas.getScale();
-				deltaX = fineCtrlScale(deltaX);
-				deltaY = fineCtrlScale(deltaY);
 
 				// compute the absolution new mouse pos on the remote site.
 				float newRemoteX = vncCanvas.mouseX + deltaX;
@@ -346,8 +317,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 				float deltaY = (e.getY() - dragY) *vncCanvas.getScale();
 				dragX = e.getX();
 				dragY = e.getY();
-				deltaX = fineCtrlScale(deltaX);
-				deltaY = fineCtrlScale(deltaY);
 
 				// compute the absolution new mouse pos on the remote site.
 				float newRemoteX = vncCanvas.mouseX + deltaX;
@@ -545,7 +514,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 	ViewGroup mousebuttons;
 	TouchPointView touchpoints;
 	Toast notificationToast;
-	PopupMenu fabMenu;
 
 	ProgressDialog firstFrameWaitDialog;
 
@@ -587,20 +555,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 
 		inputHandler = new MightyInputHandler();
 		inputHandler.init();
-
-		/*
-		 * Setup floating action button & associated menu
-		 */
-		FloatingActionButton fab = findViewById(R.id.fab);
-		fab.setOnClickListener(view -> {
-			Log.d(TAG, "FAB onClick");
-			prepareFabMenu(fabMenu);
-			fabMenu.show();
-		});
-		fabMenu = new PopupMenu(this, fab);
-		fabMenu.inflate(R.menu.vnccanvasactivitymenu);
-		fabMenu.setOnMenuItemClickListener(this);
-
 
 		/*
 		 * Setup connection bean.
@@ -736,12 +690,8 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 
 		mousebuttons = (ViewGroup) findViewById(R.id.virtualmousebuttons);
 		MouseButtonView mousebutton1 = (MouseButtonView) findViewById(R.id.mousebutton1);
-		MouseButtonView mousebutton2 = (MouseButtonView) findViewById(R.id.mousebutton2);
-		MouseButtonView mousebutton3 = (MouseButtonView) findViewById(R.id.mousebutton3);
 
 		mousebutton1.init(1, vncCanvas);
-		mousebutton2.init(2, vncCanvas);
-		mousebutton3.init(3, vncCanvas);
 		if(! prefs.getBoolean(Constants.PREFS_KEY_MOUSEBUTTONS, true))
 			mousebuttons.setVisibility(View.GONE);
 
@@ -871,22 +821,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 
 	}
 
-	/**
-	 * Prepare FAB popup menu.
-	 */
-	private void prepareFabMenu(PopupMenu popupMenu) {
-		Menu menu = popupMenu.getMenu();
-		if (touchpoints.getVisibility() == View.VISIBLE) {
-			menu.findItem(R.id.itemColorMode).setVisible(false);
-			menu.findItem(R.id.itemTogglePointerHighlight).setVisible(false);
-		} else {
-			menu.findItem(R.id.itemColorMode).setVisible(true);
-			menu.findItem(R.id.itemTogglePointerHighlight).setVisible(true);
-		}
-
-		// changing pixel format without Fence extension (https://github.com/rfbproto/rfbproto/blob/master/rfbproto.rst#clientfence) not safely possible
-		menu.findItem(R.id.itemColorMode).setVisible(false);
-	}
 
 	@Override
 	public boolean onMenuItemClick(MenuItem item) {
@@ -1023,12 +957,6 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent evt) {
 		if(Utils.DEBUG()) Log.d(TAG, "Input: key down: " + evt.toString());
-
-		if (keyCode == KeyEvent.KEYCODE_MENU) {
-			prepareFabMenu(fabMenu);
-			fabMenu.show();
-			return true;
-		}
 
 		if(keyCode == KeyEvent.KEYCODE_BACK) {
 
@@ -1178,18 +1106,19 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 	 * @param event
 	 */
 	private boolean pan(MotionEvent event) {
-		float curX = event.getX();
+		return true;
+		/*float curX = event.getX();
 		float curY = event.getY();
 		int dX = (int) (panTouchX - curX);
 		int dY = (int) (panTouchY - curY);
 
-		return vncCanvas.pan(dX, dY);
+		return vncCanvas.pan(curX, curY);*/
 	}
 
 
 
 	boolean touchPan(MotionEvent event) {
-		switch (event.getAction()) {
+		/*switch (event.getAction()) {
 		case MotionEvent.ACTION_DOWN:
 			panTouchX = event.getX();
 			panTouchY = event.getY();
@@ -1202,7 +1131,7 @@ public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemC
 		case MotionEvent.ACTION_UP:
 			pan(event);
 			break;
-		}
+		}*/
 		return true;
 	}
 
