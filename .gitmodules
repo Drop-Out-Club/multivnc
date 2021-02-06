@@ -10,4 +10,4 @@
 [submodule "libressl"]
 	path = libressl
 	url = https://github.com/libressl-portable/portable.git
-	branch = v3.3.1
+	tag = v3.3.1
