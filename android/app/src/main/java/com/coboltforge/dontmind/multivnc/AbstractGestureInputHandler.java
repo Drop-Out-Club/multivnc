@@ -8,6 +8,7 @@ import android.view.GestureDetector;
 import android.view.InputDevice;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
+import android.os.Build;
 
 /**
  * An AbstractInputHandler that uses GestureDetector to detect standard gestures in touch events
@@ -30,8 +31,11 @@ abstract class AbstractGestureInputHandler extends GestureDetector.SimpleOnGestu
 		activity = c;
 		gestures= new GestureDetector(c, this, null, false); // this is a SDK 8+ feature and apparently needed if targetsdk is set
 		gestures.setOnDoubleTapListener(this);
+
 		scaleGestures = new ScaleGestureDetector(c, this);
-		scaleGestures.setQuickScaleEnabled(false);
+
+		if (Build.VERSION.SDK_INT >= 19)
+			scaleGestures.setQuickScaleEnabled(false);
 	}
 
 	public boolean onTouchEvent(MotionEvent evt) {
