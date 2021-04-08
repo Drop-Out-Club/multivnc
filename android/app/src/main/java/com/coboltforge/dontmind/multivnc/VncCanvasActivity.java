@@ -61,7 +61,7 @@ import android.widget.Toast;
 import android.view.inputmethod.InputMethodManager;
 import android.content.Context;
 
-import com.example.cycle.R;
+import com.cyclephones.cycle.R;
 
 @SuppressWarnings("deprecation")
 public class VncCanvasActivity extends Activity implements PopupMenu.OnMenuItemClickListener {

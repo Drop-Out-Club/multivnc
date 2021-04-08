@@ -26,7 +26,7 @@ import android.view.SurfaceView;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 
-import com.example.cycle.R;
+import com.cyclephones.cycle.R;
 
 
 public class TouchPointView extends SurfaceView implements SurfaceHolder.Callback {

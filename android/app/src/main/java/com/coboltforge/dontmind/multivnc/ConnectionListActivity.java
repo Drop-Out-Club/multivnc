@@ -28,7 +28,7 @@ import android.view.View;
 import android.widget.ListView;
 import android.widget.SimpleCursorAdapter;
 
-import com.example.cycle.R;
+import com.cyclephones.cycle.R;
 
 /**
  * @author Michael A. MacDonald

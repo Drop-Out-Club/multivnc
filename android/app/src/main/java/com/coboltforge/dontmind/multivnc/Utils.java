@@ -18,8 +18,8 @@ import android.text.Html;
 import android.util.Log;
 import android.view.MotionEvent;
 
-import com.example.cycle.R;
-import com.example.cycle.BuildConfig;
+import com.cyclephones.cycle.R;
+import com.cyclephones.cycle.BuildConfig;
 
 public class Utils {
 

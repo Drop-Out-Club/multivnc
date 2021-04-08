@@ -62,7 +62,7 @@ import android.widget.ImageView.ScaleType;
 
 import static android.content.Context.MODE_PRIVATE;
 
-import com.example.cycle.R;
+import com.cyclephones.cycle.R;
 
 
 public class VncCanvas extends GLSurfaceView {

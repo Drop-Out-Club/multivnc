@@ -44,7 +44,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.ZoomButton;
 
-import com.example.cycle.R;
+import com.cyclephones.cycle.R;
 
 /**
  * The {@code ZoomControls} class displays a simple set of controls used for zooming and

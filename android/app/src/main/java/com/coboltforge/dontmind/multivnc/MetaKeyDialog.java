@@ -32,7 +32,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.cycle.R;
+import com.cyclephones.cycle.R;
 
 /**
  * @author Michael A. MacDonald
